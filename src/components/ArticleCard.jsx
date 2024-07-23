@@ -10,7 +10,16 @@ const ArticleCard = ({className}) => {
             <p className='text-dark-light mt-3 text-sm'>Majority of people will work in jobs that don't exist today.</p>
             <div className='flex justify-between flex-nowrap items-center mt-6'>
                 <div className='flex items-center gap-x-2'>
-                    
+                    <img src={images.PostProfileImage} alt='post profile'/>
+                    <div className='flex flex-col'>
+                        <h4 className='font-bold italic text-dark-soft text-sm '>
+                            Viola Manisa
+                        </h4>
+                        <div className='flex items-center gap-x-2'>
+                            <span></span>
+                            
+                        </div>
+                    </div>
                 </div>
                 <span>02 May</span>  
             </div>
