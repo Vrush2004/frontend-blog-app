@@ -9,7 +9,7 @@ const images = {
     HeroImage,
     Post1Image,
     PostProfileImage,
-    CTAImage
+    CTAImage,
 }
 
 export default images;
