@@ -1,4 +1,5 @@
 import React from 'react';
+import {FaTelegram, FaLinkedin, FaGithub} from 'react-icons/fa';
 import {images} from '../constants';
 
 const Footer = () => {
@@ -77,14 +78,26 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
-            <img src={images.logo} alt='logo'/>
-            <p>
+          <div className='col-span-10'>
+            <img src={images.logo} alt='logo' className='w-12 h-auto mx-auto'/>
+            <p className='text-sm text-dark-light text-center mt-4'>
               Build a modern and creative website with crealand
             </p>
-            <ul className='fle justify-center items-center mt-5 space-x-4 text-gray-300'>
+            <ul className='flex justify-center items-center mt-5 space-x-4 text-gray-300'>
                 <li>
-                  <a href="/"></a>
+                  <a href="/">
+                    <FaTelegram className='w-6 h-auto'/>
+                  </a>
+                </li>
+                <li>
+                  <a href="/">
+                    <FaLinkedin className='w-6 h-auto'/>
+                  </a>
+                </li>
+                <li>
+                  <a href="/">
+                    <FaGithub className='w-6 h-auto'/>
+                  </a>
                 </li>
             </ul>
 
