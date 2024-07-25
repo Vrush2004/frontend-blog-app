@@ -7,6 +7,7 @@ const BreadCrumbs = ({data}) => {
         {data.map((item, index) => (
             <div className='text-black opacity-50 text-xs'>
                 <Link to={item.link}>{item.name}</Link>
+                {index != data.length -1  && <span className='px-3'>/</span>}
             </div>
         ))}
     </div>
