@@ -60,8 +60,8 @@ const ArticleDetailPage = () => {
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nostrum doloribus ea error natus incidunt esse officia, debitis, excepturi, atque perspiciatis ad eligendi consectetur veniam vitae consequatur dolore? Aliquid, nemo!Dolores quas maiores voluptatibus dicta odio perferendis debitis similique earum ab repellendus, consequuntur perspiciatis aliquam voluptatem natus excepturi illo eligendi? Sequi velit sint aperiam consequuntur, eveniet incidunt quisquam exercitationem ut!  
                     </p>
                 </div>
-            </article>
-            <CommentsContainer className='mt-10'/>
+                <CommentsContainer className='mt-10' logginedUserId='a'/>
+            </article> 
             <SuggestedPosts 
                 header='Latest Article' 
                 posts={postData} 

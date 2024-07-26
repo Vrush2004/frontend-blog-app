@@ -1,7 +1,13 @@
 import React from 'react';
+import {FaRegMessage} from 'react-icons/fa6';
+import {MdOutlineEdit} from 'react-icons/md';
+import {IoTrashOutline} from 'react-icons/io5'
 import {images} from '../../constants';
 
-const Comment = ({comment}) => {
+const Comment = ({comment, logginedUserId}) => {
+const isUserLoggined = Boolean(logginedUserId);
+const commentBelongsToUser = logginedUserId === comment.user._id;
+
   return (
     <div className='flex flex-nowrap items-start gap-x-3 bg-[#F2F4F5] p-3 rounded-lg'>
         <img 
@@ -21,6 +27,29 @@ const Comment = ({comment}) => {
                     hour: '2-digit'
                 })}
             </span>
+            <p className='font-opensans mt-[10px] text-dark-light'>
+                {comment.desc}
+            </p>
+            <div className='flex items-center gap-x-3 text-dark-light font-roboto text-sm mt-3 mb-3'>
+                {isUserLoggined && (
+                    <button className='flex items-center space-x-2'>
+                        <FaRegMessage className='w-4 h-auto'/>
+                        <span>Reply</span>
+                    </button>
+                )}  
+                {commentBelongsToUser && (
+                    <>
+                        <button className='flex items-center space-x-2'>
+                            <MdOutlineEdit className='w-4 h-auto'/>
+                            <span>Edit</span>
+                        </button>   
+                        <button className='flex items-center space-x-2'>
+                            <IoTrashOutline className='w-4 h-auto'/>
+                            <span>Delete</span>
+                        </button>
+                    </>
+                )}
+            </div>
         </div>
 
     </div>
