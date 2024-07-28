@@ -1,8 +1,10 @@
 import React from 'react'
 import {FaArrowRight} from 'react-icons/fa6';
+
 import ArticleCard from '../../components/ArticleCard'
 
 const Articles = () => {
+
   return (
     <section className='flex flex-col container mx-auto px-5 py-10'>
       <div className='flex flex-wrap md:gap-x-5 gap-y-5 pb-10'>
