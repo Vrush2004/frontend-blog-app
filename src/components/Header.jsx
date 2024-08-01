@@ -4,6 +4,7 @@ import {MdKeyboardArrowDown} from 'react-icons/md';
 import { images } from '../constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/actions/user';
+import { useNavigate } from 'react-router-dom';
 
 const NavItemsInfo = [
   {name: 'Home',type: "link"},
@@ -56,6 +57,7 @@ const NavItem = ({item}) => {
 };
 
 const Header = () => {
+const navigate = useNavigate();
 const dispatch = useDispatch();
 const [navIsVisible, setNavIsVisible] = useState(false);
 const userState = useSelector(state => state.user);
@@ -118,7 +120,10 @@ const logoutHandler = () => {
                 </div>    
               </div>
             ) : (
-             <button className='mt-5 lg:mt-0 border-2 border-green-800 px-6 py-2 rounded-full text-green-900 font-semibold hover:bg-green-800 hover:text-white transition-all duration-300'>
+            <button 
+              onClick={() => navigate("/login")} 
+              className='mt-5 lg:mt-0 border-2 border-green-800 px-6 py-2 rounded-full text-green-900 font-semibold hover:bg-green-800 hover:text-white transition-all duration-300'
+            >
               Sign In
             </button> 
           )}
