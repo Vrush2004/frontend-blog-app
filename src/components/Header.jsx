@@ -103,13 +103,17 @@ const logoutHandler = () => {
                       className='flex gap-x-1 items-center mt-5 lg:mt-0 border-2 border-green-800 px-6 py-2 rounded-full text-green-900 font-semibold hover:bg-green-800 hover:text-white transition-all duration-300' 
                       onClick={() => setprofileDropdown(!profileDropdown)}
                     >
-                    <span>Profile</span>
+                    <span>Account</span>
                     <MdKeyboardArrowDown/>
                     </button>
                     <div className={`${profileDropdown ? "block" : "hidden"} lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}>
                       <ul className='bg-dark-soft lg:bg-transparent text-center flex flex-col shadow-lg rounded-lg overflow-hidden'>
-                          <button type="button" className='hover:bg-dark-hard hover:text-white px-4 py-2 text-white lg:text-dark-soft'>
-                            Dashboard
+                          <button
+                            onClick={() => navigate("/profile")} 
+                            type="button" 
+                            className='hover:bg-dark-hard hover:text-white px-4 py-2 text-white lg:text-dark-soft'
+                          >
+                            Profile Page
                           </button>
                           <button onClick={logoutHandler} type="button" className='hover:bg-dark-hard hover:text-white px-4 py-2 text-white lg:text-dark-soft'>
                             Logout
