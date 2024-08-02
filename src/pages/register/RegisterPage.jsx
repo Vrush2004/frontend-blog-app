@@ -154,13 +154,10 @@ const password = watch('password');
                         <p className='text-red-500 text-xs mt-1'>{errors.confirmpassword?.message}</p>
                     )}
                 </div>
-                <Link to="/forget-password" className='text-sm font-semibold text-green-800'>
-                    Forgot Password?
-                </Link>
                 <button 
                     type='submit' 
                     disabled={!isValid || isLoading}
-                    className='bg-green-800 text-white font-bold text-lg py-4 px-8 w-full rounded-lg my-6 disabled:opacity-70 disabled:cursor-not-allowed'
+                    className='bg-green-800 text-white font-bold text-lg py-4 px-8 w-full rounded-lg mb-6 disabled:opacity-70 disabled:cursor-not-allowed'
                 >
                     Register
                 </button>
