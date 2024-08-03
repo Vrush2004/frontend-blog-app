@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import {getUserProfile} from '../../services/index/users';
+import ProfilePicture from '../../components/ProfilePicture';
 
 const ProfilePage = () => {
 const navigate = useNavigate();
@@ -29,15 +30,19 @@ const {register, handleSubmit, formState:{errors, isValid},} = useForm({
         email: '',
         password: '',
     },
+    values:{
+        name: profileIsLoading ? "" : profileData.name,
+        email: profileIsLoading ? "" : profileData.email,
+    },
     mode: "onChange"
 });
 
-const submitHandler = (data) =>{   
-}   
+const submitHandler = (data) =>{};
 
   return <MainLayout>
     <section className='container mx-auto px-5 py-10'>
         <div className='w-full max-w-sm mx-auto'>
+            <ProfilePicture avatar={profileData?.avatar}/>
             <form onSubmit={ handleSubmit(submitHandler)}>
                 <div className='flex flex-col mb-6 w-full'>
                     <label htmlFor='name' className='text-[#5a7184] font-semibold block'>
@@ -113,7 +118,7 @@ const submitHandler = (data) =>{
                 </div>
                 <button 
                     type='submit' 
-                    disabled={!isValid}
+                    disabled={!isValid || profileIsLoading}
                     className='bg-green-800 text-white font-bold text-lg py-4 px-8 w-full rounded-lg mb-6 disabled:opacity-70 disabled:cursor-not-allowed'
                 >
                     Register
