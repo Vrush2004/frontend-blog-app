@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { generateHTML } from '@tiptap/html';
+import Bold from '@tiptap/extension-bold';
+import Document from '@tiptap/extension-document';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import Italic from '@tiptap/extension-italic';
+import parse from 'html-react-parser';
+
 import MainLayout from '../../components/MainLayout'
 import BreadCrumbs from '../../components/BreadCrumbs';
-import { images } from '../../constants';
-import { Link } from 'react-router-dom';
+import { images, stables } from '../../constants';
+import { Link, useParams } from 'react-router-dom';
 import SuggestedPosts from './container/SuggestedPosts';
 import CommentsContainer from '../../components/comments/CommentsContainer';
 import SocialShareButtons from '../../components/SocialShareButtons';
-
-const breadCrumbData = [
-    {name: "Home", link:'/'},
-    {name: "Blog", link:'/blog'},
-    {name: "Article Title", link:'/blog/1'}
-];
+import { useQuery } from '@tanstack/react-query';
+import { getSinglePosts } from '../../services/index/posts';
 
 const postData = [
     {
@@ -44,22 +48,50 @@ const tagsData = [
 ];
 
 const ArticleDetailPage = () => {
+const {slug} = useParams();
+const [breadCrumbsData, setBreadCrumbsData] = useState([]);
+const [body, setBody] = useState(null)
+
+const {data} = useQuery({
+    queryFn: () => getSinglePosts({slug}),
+    onSuccess: (data) => {
+        setBreadCrumbsData([
+            {name: "Home", link:'/'},
+            {name: "Blog", link:'/blog'},
+            {name: "Article Title", link:`/blog/${data.slug}`}
+        ])
+        setBody(
+            parse(generateHTML(data?.body, [Bold, Italic, Text, Paragraph, Document]))
+        )    
+    }
+}) 
+
   return (
     <MainLayout>
         <section className='container mx-auto max-w-5xl flex flex-col px-5 py-5 lg:flex-row lg:gap-x-5 lg:items-start'>
             <article className='flex-1'>
-                <BreadCrumbs data={breadCrumbData}/>
-                <img className='rounded-xl w-full' src={images.Post1Image} alt='Mobile' />
-                <Link to='/blog?category=selectedCategory' className='text-dark-light text-sm font-roboto inline-block mt-4 md:text-base'>
-                    EDUCATION
-                </Link>
+                <BreadCrumbs data={breadCrumbsData}/>
+                <img 
+                    className='rounded-xl w-full' 
+                    src={data?.photo ? stables.UPLOAD_FOLDER_BASE_URL + data?.photo : images.samplePostImage} 
+                    alt={data?.title}
+                />
+                <div className='mt-4 flex gap-2'>
+                    {data?.categories.map((category) => (
+                        <Link 
+                            to={`/blog?category=${category.name}`}
+                            className='text-dark-light text-sm font-roboto inline-block md:text-base'
+                        >
+                            {category.name}
+                        </Link>
+                    ))}
+                </div>
+                
                 <h1 className='text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]'>
-                    Help children get better education
+                    {data?.title}
                 </h1>
-                <div className='mt-4 text-dark-soft'>
-                    <p className='leading-7'>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nostrum doloribus ea error natus incidunt esse officia, debitis, excepturi, atque perspiciatis ad eligendi consectetur veniam vitae consequatur dolore? Aliquid, nemo!Dolores quas maiores voluptatibus dicta odio perferendis debitis similique earum ab repellendus, consequuntur perspiciatis aliquam voluptatem natus excepturi illo eligendi? Sequi velit sint aperiam consequuntur, eveniet incidunt quisquam exercitationem ut!  
-                    </p>
+                <div className='mt-4 prose prose-sm sm:prose-base'>
+                    {body}
                 </div>
                 <CommentsContainer className='mt-10' logginedUserId='a'/>
             </article> 
