@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getAllPosts } from '../../services/index/posts';
 import toast from 'react-hot-toast';
 import ArticleCardSkeleton from '../../components/ArticleCardSkeleton';
+import ErrorMessage from '../../components/ErrorMessage';
 
 const Articles = () => {
 const {data, isLoading, isError} = useQuery({
@@ -25,12 +26,16 @@ const {data, isLoading, isError} = useQuery({
                 <ArticleCardSkeleton key={index} className="w-full md:w-[calc(50%-20px)] lg:w-[calc(33.33%-21px)]" />
             ))
         ) :
-        data.map((post) => (
+        isError ? ( 
+          <ErrorMessage message="Couldn't fetch the posts data" /> 
+        ) : (
+          data.map((post) => (
             <ArticleCard 
               key={post._id}
               post={post}
               className='w-full md:w-[calc(50%-20px)] lg:w-[calc(33.33%-21px)]'/>
-        ))}
+            ))
+        )}
           
       </div>
       <button className='mx-auto flex items-center gap-x-2 font-bold text-green-900 border-2 border-green-900 px-6 py-3 rounded-lg'>
