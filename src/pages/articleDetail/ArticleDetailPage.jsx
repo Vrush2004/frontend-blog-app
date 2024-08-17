@@ -108,6 +108,7 @@ const {data, isLoading, isError} = useQuery({
                         comments = {data.comments}
                         className='mt-10' 
                         logginedUserId={userState?.userInfo?._id}
+                        postSlug={slug}
                     />
                 </article> 
                 <div>
