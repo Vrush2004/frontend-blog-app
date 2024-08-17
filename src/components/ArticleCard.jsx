@@ -29,7 +29,7 @@ const ArticleCard = ({post, className}) => {
                     <img 
                         src={post.user.avatar ? stables.UPLOAD_FOLDER_BASE_URL + post.user.avatar : images.userImage} 
                         alt='post profile' 
-                        className='h-9 w-g md:w-10 md:h-10 rounded-full'/>
+                        className='h-9 w-9 md:w-10 md:h-10 rounded-full'/>
                     <div className='flex flex-col'>
                         <h4 className='font-bold italic text-dark-soft text-sm md:text-base'>
                             {post.user.name}

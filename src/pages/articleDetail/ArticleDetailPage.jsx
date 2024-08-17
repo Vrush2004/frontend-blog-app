@@ -54,6 +54,7 @@ const [body, setBody] = useState(null)
 
 const {data} = useQuery({
     queryFn: () => getSinglePosts({slug}),
+    queryKey: ['blog', slug],
     onSuccess: (data) => {
         setBreadCrumbsData([
             {name: "Home", link:'/'},
