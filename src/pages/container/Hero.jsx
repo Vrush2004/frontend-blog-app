@@ -8,7 +8,8 @@ const Hero = () => {
         <div className='mt-10 lg:w-1/2'>
             <h1 className='font-roboto text-3xl text-center font-bold text-dark-soft md:text-5xl lg:text-4xl xl:text-5xl lg:text-left lg:max-w-[540px]'>Read the most Interesting Articles</h1>
             <p className='text-dark-light mt-4 text-center md:text-xl lg:text-base xl:text-xl lg:text-left'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt temporibus officiis doloribus voluptatum explicabo repudiandae accusantium autem quasi, amet quis beatae delectus vero nulla ipsa quaerat possimus necessitatibus perferendis nesciunt.
+                Explore a diverse collection of articles that spark curiosity and inspire thought. From cutting-edge innovations to timeless insights, our articles cover a wide range of topics designed to inform, entertain, and engage. Whether you're in the mood for a deep dive or a quick read, you'll find something intriguing to enjoy.
+
             </p>
            <div className='flex flex-col gap-y-2.5 mt-10 lg:mt-6 xl:mt-10 relative'>
                 <div className='relative'>
