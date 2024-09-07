@@ -15,40 +15,10 @@ import SuggestedPosts from './container/SuggestedPosts';
 import CommentsContainer from '../../components/comments/CommentsContainer';
 import SocialShareButtons from '../../components/SocialShareButtons';
 import { useQuery } from '@tanstack/react-query';
-import { getSinglePosts } from '../../services/index/posts';
+import { getAllPosts, getSinglePosts } from '../../services/index/posts';
 import ArticleDetailSkeleton from './components/ArticleDetailSkeleton';
 import ErrorMessage from '../../components/ErrorMessage';
 import { useSelector } from 'react-redux';
-
-const postData = [
-    {
-        _id : '1',
-        image: images.Post1Image,
-        title: 'Help children get better education',
-        createdAt:'2023-01-28T15:35:53.607+0000'
-    },
-    {
-        _id : '2',
-        image: images.Post1Image,
-        title: 'Help children get better education',
-        createdAt:'2023-01-28T15:35:53.607+0000'
-    },
-    {
-        _id : '3',
-        image: images.Post1Image,
-        title: 'Help children get better education',
-        createdAt:'2023-01-28T15:35:53.607+0000'
-    }
-];
-
-const tagsData = [
-    'Medical',
-    'Lifestyle',
-    'Learn',
-    'Food',
-    'Diet',
-    'Education',
-];
 
 const ArticleDetailPage = () => {
 const userState = useSelector((state => state.user))
@@ -71,6 +41,10 @@ const {data, isLoading, isError} = useQuery({
     }
 }) 
 
+const {data:postsData} = useQuery({
+    queryFn: () => getAllPosts(),
+    queryKey: ["posts"],
+}) 
   return (
     <MainLayout>
         {isLoading ? (
@@ -114,8 +88,8 @@ const {data, isLoading, isError} = useQuery({
                 <div>
                     <SuggestedPosts 
                         header='Latest Article' 
-                        posts={postData} 
-                        tags={tagsData}
+                        posts={postsData} 
+                        tags={data?.tags}
                         className='mt-8 lg:mt-0 lg:max-w-xs'
                     />
                     <div className='mt-7'>
@@ -123,11 +97,9 @@ const {data, isLoading, isError} = useQuery({
                             Share on:
                         </h2>
                         <SocialShareButtons 
-                            url={encodeURI(
-                                'https://moonfo.com/post/client-side-and-server-side-explanation'
-                            )}
+                            url={encodeURI(window.location.href)}
                             title={encodeURIComponent(
-                                'Client-side and Server-side Explanation'
+                                data?.title
                             )}
                         />
                     </div>
