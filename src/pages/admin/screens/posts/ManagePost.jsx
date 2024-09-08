@@ -1,13 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { getAllPosts } from '../../../../services/index/posts'
 import { useQuery } from '@tanstack/react-query'
 import { images, stables } from '../../../../constants'
 
 const ManagePost = () => {
-  const {data: postsData, isLoading, isFetching} = useQuery({
-    queryFn: () => getAllPosts(),
+const [searchKeyword, setSearchKeyword] = useState("") 
+const [currentPage, setCurrentPage] = useState(1);
+
+  const {data: postsData, isLoading, isFetching, refetch} = useQuery({
+    queryFn: () => getAllPosts(searchKeyword, currentPage),
     queryKey: ["posts"],
   })
+
+  const searchKeywordHandler = (e)=> {
+    const {value} = e.target;
+    setSearchKeyword(value)
+  }
+
+  const submitSearchKeywordHandler = (e)=>{
+    e.preventDefault();
+    refetch();
+  }
 
   return (
     <div>
@@ -20,11 +33,11 @@ const ManagePost = () => {
                     Users
                 </h2>
                 <div className="text-end">
-                    <form className="flex flex-col justify-center w-3/4 max-w-sm space-y-3 md:flex-row md:w-full md:space-x-3 md:space-y-0">
+                    <form onSubmit={submitSearchKeywordHandler} className="flex flex-col justify-center w-3/4 max-w-sm space-y-3 md:flex-row md:w-full md:space-x-3 md:space-y-0">
                         <div className=" relative ">
-                            <input type="text" id="&quot;form-subscribe-Filter" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="name"/>
+                            <input type="text" id="&quot;form-subscribe-Filter" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Post Title..." onChange={searchKeywordHandler} value={searchKeyword}/>
                             </div>
-                            <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200" type="submit">
+                            <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-green-600 rounded-lg shadow-md hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-purple-200" type="submit">
                                 Filter
                             </button>
                         </form>
@@ -99,7 +112,7 @@ const ManagePost = () => {
                                       </div>
                                   </td>
                                   <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                                      <a href="/" className="text-indigo-600 hover:text-indigo-900">
+                                      <a href="/" className="text-green-600 hover:text-green-900">
                                           Edit
                                       </a>
                                   </td>
@@ -117,7 +130,7 @@ const ManagePost = () => {
                                         </path>
                                     </svg>
                                 </button>
-                                <button type="button" className="w-full px-4 py-2 text-base text-indigo-500 bg-white border-t border-b hover:bg-gray-100 ">
+                                <button type="button" className="w-full px-4 py-2 text-base text-green-500 bg-white border-t border-b hover:bg-gray-100 ">
                                     1
                                 </button>
                                 <button type="button" className="w-full px-4 py-2 text-base text-gray-600 bg-white border hover:bg-gray-100">
