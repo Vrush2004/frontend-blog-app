@@ -88,7 +88,7 @@ const {data:postsData} = useQuery({
                 <div>
                     <SuggestedPosts 
                         header='Latest Article' 
-                        posts={postsData} 
+                        posts={postsData?.data} 
                         tags={data?.tags}
                         className='mt-8 lg:mt-0 lg:max-w-xs'
                     />
