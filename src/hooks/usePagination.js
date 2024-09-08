@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 
-const DOTS = "...";
+export const DOTS = "...";
 
-export const usePagination = ({totalCount, pageSize, siblingCount = 1, currentPage, totalPageCount}) => {
+export const usePagination = ({siblingCount = 1, currentPage, totalPageCount}) => {
     const paginationRange = useMemo(()=>{
         // our core logic goes here 
         const totalPageNumbers = siblingCount + 5;
@@ -45,9 +45,7 @@ export const usePagination = ({totalCount, pageSize, siblingCount = 1, currentPa
             let middleRange = range(leftSiblingIndex, rightSiblingIndex);
             return [firstPageIndex, DOTS, middleRange, DOTS, lastPageIndex]
         }
-    }, [
-        totalCount,
-        pageSize, 
+    }, [ 
         siblingCount, 
         currentPage, 
         totalPageCount
