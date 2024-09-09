@@ -1,11 +1,4 @@
 import React, { useState } from 'react';
-import { generateHTML } from '@tiptap/html';
-import Bold from '@tiptap/extension-bold';
-import Document from '@tiptap/extension-document';
-import Paragraph from '@tiptap/extension-paragraph';
-import Text from '@tiptap/extension-text';
-import Italic from '@tiptap/extension-italic';
-import parse from 'html-react-parser';
 
 import MainLayout from '../../components/MainLayout'
 import BreadCrumbs from '../../components/BreadCrumbs';
@@ -19,6 +12,7 @@ import { getAllPosts, getSinglePosts } from '../../services/index/posts';
 import ArticleDetailSkeleton from './components/ArticleDetailSkeleton';
 import ErrorMessage from '../../components/ErrorMessage';
 import { useSelector } from 'react-redux';
+import parseJsonToHtml from '../../utils/parsejsonToHtml';
 
 const ArticleDetailPage = () => {
 const userState = useSelector((state => state.user))
@@ -35,9 +29,7 @@ const {data, isLoading, isError} = useQuery({
             {name: "Blog", link:'/blog'},
             {name: "Article Title", link:`/blog/${data.slug}`}
         ])
-        setBody(
-            parse(generateHTML(data?.body, [Bold, Italic, Text, Paragraph, Document]))
-        )    
+        setBody(parseJsonToHtml(data?.body))    
     }
 }) 
 
