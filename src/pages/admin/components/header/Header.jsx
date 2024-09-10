@@ -7,38 +7,34 @@ import { MdDashboard } from 'react-icons/md'
 import NavItem from './NavItem'
 import NavItemCollapse from './NavItemCollapse'
 import { useWindowSize } from '@uidotdev/usehooks'
-
-const MENU_ITEMS = [
-    {
-        title: "Dashboard",
-        link:"/admin",
-        icon: <AiFillDashboard className='text-xl'/>,
-        name: "dashboard",
-        type: "link"
-    },
-    {
-        title: "Comments",
-        link:"/admin/comments",
-        icon: <FaComments className='text-xl'/>,
-        name: "comments",
-        type: "link"
-    },
-    {
-        title: "Posts",
-        content: [
-            {title: "New", link: "/admin/posts/new"}, 
-            {title: "Manage", link: "/admin/posts/manage"}
-        ],
-        icon: <MdDashboard className='text-xl'/>,
-        name: "posts",
-        type: "collapse"
-    }
-]
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
+import { useSelector } from 'react-redux'
+import { createPost } from '../../../../services/index/posts'
 
 const Header = () => {
+const userState = useSelector((state) =>state.user)
+const queryClient = useQueryClient() 
 const [isMenuActive, setIsMenuActive] = useState(false)
 const [activeNavName, setActiveNavName] = useState("dashboard")
 const windowSize = useWindowSize()
+
+const { mutate:mutateCreatePost, isLoading: isLoadingCreatePost } = useMutation({
+    mutationFn: ({token }) => {
+      return createPost({
+        token
+      });
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['posts'])
+      toast.success("Post is created");
+      console.log(data)
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.log(error);
+    },
+  });
 
 const toggleMenuHandler = () => {
     setIsMenuActive((prevState) => !prevState)
@@ -51,6 +47,10 @@ useEffect(() => {
         setIsMenuActive(true)
     }
 }, [windowSize.width])
+
+const handleCreateNewPost = ({token})=>{
+    mutateCreatePost({token})
+}
 
   return (
     <header className='flex h-fit w-full items-center justify-between p-4 lg:h-full lg:max-w-[300px] lg:flex-col lg:items-start lg:justify-start lg:p-0'>
@@ -79,28 +79,38 @@ useEffect(() => {
                     <h4 className='mt-10 font-bold text-[#C7C7C7]'>MAIN MENU</h4>
                     {/* menu items */}
                     <div className='mt-6 flex flex-col gap-y-[0.563rem]'>
-                        {MENU_ITEMS.map((item) => 
-                            item.type === "link" ? 
-                            (<NavItem 
-                                key={item.title}
-                                title = {item.title} 
-                                link = {item.link}
-                                icon = {item.icon}
-                                name = {item.name}
+                            <NavItem 
+                                title = "Dashboard" 
+                                link = "/admin"
+                                icon = {<AiFillDashboard className='text-xl'/>}
+                                name = "Dashboard"
                                 activeNavName={activeNavName}
                                 setActiveNavName={setActiveNavName}
                             />
-                            ) : (
+                            <NavItem 
+                                title = "Comments" 
+                                link = "/admin/comments"
+                                icon = {<FaComments className='text-xl'/>}
+                                name = "comments"
+                                activeNavName={activeNavName}
+                                setActiveNavName={setActiveNavName}
+                            />
                             <NavItemCollapse
-                                key={item.title}
-                                title = {item.title} 
-                                content = {item.content}
-                                icon = {item.icon}
-                                name = {item.name}
+                                title = "Posts" 
+                                icon = {<MdDashboard className='text-xl'/>}
+                                name = "posts"
                                 activeNavName={activeNavName}
                                 setActiveNavName={setActiveNavName}
-                            />
-                            ))}
+                            >
+                                <Link to="/admin/posts/manage">Manage all posts</Link>
+                                <button 
+                                    disabled={isLoadingCreatePost}
+                                    className='text-start disabled:opacity-60 disabled:cursor-not-allowed'
+                                    onClick={() => handleCreateNewPost({token: userState.userInfo.token})}
+                                >
+                                    Add New Post
+                                </button>
+                            </NavItemCollapse>
                     </div>
                 </div>
             </div>

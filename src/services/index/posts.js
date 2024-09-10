@@ -55,3 +55,21 @@ export const updatePost = async({updatedData, slug, token}) => {
         throw new Error(error.message);
     }
 }
+
+export const createPost = async({updatedData, slug, token}) => {
+    try{
+        const config = {
+            headers: {
+                Authorization:`Bearer ${token}`,
+            },
+        };
+        console.log("Requesting to update post:", { slug, updatedData, token });
+        const {data} = await axios.post(`/api/posts`,{} ,config);
+        return data;
+    }catch(error){
+        console.error("Error updating post:", error.response ? error.response.data : error.message);
+        if(error.response && error.response.data.message)
+            throw new Error(error.response.data.message);
+        throw new Error(error.message);
+    }
+}
