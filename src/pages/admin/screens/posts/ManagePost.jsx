@@ -122,7 +122,7 @@ const [currentPage, setCurrentPage] = useState(1);
                                       <div className="flex items-center">
                                           <div className="flex-shrink-0">
                                               <a href="/" className="relative block">
-                                                  <img alt={post.title} src={post?.image ? stables.UPLOAD_FOLDER_BASE_URL + post?.image : images.samplePostImage} className="mx-auto object-cover rounded-lg w-10 aspect-square"/>
+                                                  <img alt={post.title} src={post?.photo ? stables.UPLOAD_FOLDER_BASE_URL + post?.photo : images.samplePostImage} className="mx-auto object-cover rounded-lg w-10 aspect-square"/>
                                               </a>
                                           </div>
                                           <div className="ml-3">

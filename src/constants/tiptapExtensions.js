@@ -3,16 +3,8 @@ import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import { lowlight } from "lowlight";
-import css from "highlight.js/lib/languages/css";
-import js from "highlight.js/lib/languages/javascript";
-import ts from "highlight.js/lib/languages/typescript";
-import html from "highlight.js/lib/languages/xml";
-
-lowlight.registerLanguage("html", html);
-lowlight.registerLanguage("css", css);
-lowlight.registerLanguage("js", js);
-lowlight.registerLanguage("ts", ts);
+import hljs from "highlight.js";
+import "highlight.js/styles/default.css";  // Import a CSS style for syntax highlighting
 
 export const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -20,14 +12,14 @@ export const extensions = [
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+      keepAttributes: false,
     },
     orderedList: {
       keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+      keepAttributes: false,
     },
   }),
   CodeBlockLowlight.configure({
-    lowlight,
+    lowlight: hljs,
   }),
 ];
