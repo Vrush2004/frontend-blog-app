@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import CreatableSelect from 'react-select/creatable'
 import { getSinglePosts, updatePost } from '../../../../services/index/posts'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import ArticleDetailSkeleton from '../../../articleDetail/components/ArticleDetailSkeleton';
 import ErrorMessage from '../../../../components/ErrorMessage';
 import { stables } from '../../../../constants';
@@ -22,6 +22,7 @@ const promiseOptions = async (inputValue) =>{
 const EditPost = () => {
     const {slug} = useParams();
     const queryClient = useQueryClient()
+    const navigate = useNavigate()
     const userState = useSelector((state) => state.user)
     const [initialPhoto, setInitialPhoto] = useState(null)
     const [photo, setPhoto] = useState(null)
@@ -30,16 +31,18 @@ const EditPost = () => {
     const [title, setTitle] = useState("")
     const [tags, setTags] = useState(null)
     const [postSlug, setPostSlug] = useState(slug)
+    const [caption, setCaption] = useState("")
 
     const {data, isLoading, isError} = useQuery({
         queryFn: () => getSinglePosts({slug}),
         queryKey: ['blog', slug],
         onSuccess: (data) => {
             setInitialPhoto(data?.photo)
-            setCategories(data.categories.map((item) => item.value))
+            setCategories(data.categories.map((item) => item._id))
             setTitle(data.title)
             setTags(data.tags)
-        }
+        },
+        refetchOnWindowFocus: false
     }) 
 
     const {mutate: mutateUpdatePostDetail, isLoading: isLoadingUpdatePostDetail} = useMutation({
@@ -53,6 +56,7 @@ const EditPost = () => {
         onSuccess: (data) => {
             queryClient.invalidateQueries(["blog",slug])
             toast.success("Post is updated")
+            navigate(`/admin/posts/manage/edit/${data.slug}`, {replace: true})
         },
         onError: (error) => {
             toast.error(error.message)
@@ -80,7 +84,7 @@ const EditPost = () => {
 
             updatedData.append("postPicture", picture)
         }
-        updatedData.append("document", JSON.stringify({body, categories, title, tags}))
+        updatedData.append("document", JSON.stringify({body, categories, title, tags, slug: postSlug, caption}))
 
         mutateUpdatePostDetail({updatedData, slug, token: userState.userInfo.token})
     }
@@ -147,6 +151,18 @@ const EditPost = () => {
                         />
                     </div>
                     <div className='d-form-control w-full'>
+                        <label className='d-label' htmlFor='caption'>
+                            <span className='d-label-text'>Caption</span>
+                        </label>
+                        <input 
+                            id='caption'
+                            value={caption}
+                            className='d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard'
+                            onChange={(e) => setCaption(e.target.value)}
+                            placeholder='Caption'
+                        />
+                    </div>
+                    <div className='d-form-control w-full'>
                         <label className='d-label' htmlFor='title'>
                             <span className='d-label-text'>Slug</span>
                         </label>
@@ -154,7 +170,7 @@ const EditPost = () => {
                             id='slug'
                             value={postSlug}
                             className='d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard'
-                            onChange={(e) => setPostSlug(e.target.value)}
+                            onChange={(e) => setPostSlug(e.target.value.replace(/\s+/g, "-").toLowerCase())}
                             placeholder='Post Slug'
                         />
                     </div>
