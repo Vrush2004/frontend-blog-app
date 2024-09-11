@@ -9,6 +9,14 @@ import { HiOutlineCamera } from 'react-icons/hi';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import Editor from '../../../../components/editor/Editor';
+import MultiSelectTagDropdown from '../../components/select-dropdown/MultiSelectTagDropdown';
+import { getAllCategories } from '../../../../services/index/postCategories';
+import { filterCategories } from '../../../../utils/multiSelectTagUtils';
+
+const promiseOptions = async (inputValue) =>{
+    const categoriesData = await getAllCategories();
+    return filterCategories(inputValue, categoriesData)
+}
 
 const EditPost = () => {
     const {slug} = useParams();
@@ -78,6 +86,8 @@ const EditPost = () => {
         }
     }
 
+    let isPostDataLoaded = !isLoading && !isError;
+
   return (
     <div>
          {isLoading ? (
@@ -122,8 +132,11 @@ const EditPost = () => {
                     <h1 className='text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]'>
                         {data?.title}
                     </h1>
+                    <div className='my-5'>
+                        {isPostDataLoaded && <MultiSelectTagDropdown loadOptions={promiseOptions}/>}    
+                    </div>
                     <div className="w-full">
-                        {!isLoading && !isError && (
+                        {isPostDataLoaded && (
                             <Editor content={data?.body} editable={true} onDataChange={(data)=>{
                                 setBody(data);
                             }}/>

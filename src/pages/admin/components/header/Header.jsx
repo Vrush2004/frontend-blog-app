@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { images } from '../../../../constants'
 import { AiFillDashboard, AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 import { FaComments } from 'react-icons/fa'
@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux'
 import { createPost } from '../../../../services/index/posts'
 
 const Header = () => {
+const navigate = useNavigate()
 const userState = useSelector((state) =>state.user)
 const queryClient = useQueryClient() 
 const [isMenuActive, setIsMenuActive] = useState(false)
@@ -28,7 +29,7 @@ const { mutate:mutateCreatePost, isLoading: isLoadingCreatePost } = useMutation(
     onSuccess: (data) => {
       queryClient.invalidateQueries(['posts'])
       toast.success("Post is created");
-      console.log(data)
+      navigate(`/admin/posts/manage/edit/${data.slug}`)
     },
     onError: (error) => {
       toast.error(error.message);
