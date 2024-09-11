@@ -9,6 +9,6 @@ export const filterCategories = (inputValue, categoriesData) =>{
         .filter((category) => 
             category.label.toLowerCase().includes(inputValue.toLowerCase())
         )
-
+        
     return filteredOptions;
 }
