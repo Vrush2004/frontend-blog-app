@@ -15,7 +15,7 @@ import { getAllCategories } from '../../../../services/index/postCategories';
 import { categoryToOption, filterCategories } from '../../../../utils/multiSelectTagUtils';
 
 const promiseOptions = async (inputValue) =>{
-    const categoriesData = await getAllCategories();
+    const {data: categoriesData} = await getAllCategories();
     return filterCategories(inputValue, categoriesData)
 }
 

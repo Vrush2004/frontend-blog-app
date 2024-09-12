@@ -1,8 +1,26 @@
 import axios from "axios"
 
-export const getAllCategories = async() => {
+export const getAllCategories = async(searchKeyword="", page=1, limit=10) => {
     try{
-        const {data} = await axios.get(`/api/post-categories`);
+        const {data, headers} = await axios.get(`/api/post-categories?.searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`);
+        return {data, headers};
+    }catch(error){
+        console.error("Error updating post:", error.response ? error.response.data : error.message);
+        if(error.response && error.response.data.message)
+            throw new Error(error.response.data.message);
+        throw new Error(error.message);
+    }
+}
+
+export const deleteCategory = async({slug, token}) => {
+    try{
+        const config = {
+            headers: {
+                Authorization:`Bearer ${token}`,
+            },
+        };
+
+        const {data} = await axios.delete(`/api/post-categories/${slug}`, config);
         return data;
     }catch(error){
         console.error("Error updating post:", error.response ? error.response.data : error.message);
