@@ -1,10 +1,12 @@
 import React from 'react'
 import { useDataTable } from '../../../../hooks/useDataTable'
-import { deleteComment, getAllComments } from '../../../../services/index/comments'
+import { deleteComment, getAllComments, updateComment } from '../../../../services/index/comments'
 import DataTable from '../../components/DataTable'
 import { comment } from 'postcss'
 import { stables, images } from '../../../../constants'
 import { Link } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
 const Comments = () => {
   const {
@@ -29,6 +31,20 @@ const Comments = () => {
       commentId: slug,
       token,
     })
+  }
+})
+
+const {mutate:mutateUpdateCommentCheck, isLoading: isLoadingUpdateCommentCheck} = useMutation({
+  mutationFn: ({token, check, commentId}) => {
+    return updateComment({token, check, commentId})
+  },
+  onSuccess: (data) => {
+    queryClient.invalidateQueries(["comments"])
+    toast.success(data?.check ? "Comment is approved" : "Comment is not approved")
+  },
+  onError: (error) =>{
+    toast.error(error.message)
+    console.log(error)
   }
 })
 
@@ -93,6 +109,36 @@ const Comments = () => {
                         minute: "numeric"
                     })}
                 </p>
+            </td>
+            <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 space-x-5">
+               <button 
+                  onClick={() => {
+                      mutateUpdateCommentCheck({
+                        token: userState.userInfo.token, 
+                        check: comment?.check ? false : true,
+                        commentId: comment._id
+                      })
+                  }}
+                  disabled={isLoadingDeleteData}
+                  type='button' 
+                  className={`${
+                    comment?.check 
+                    ? "text-yellow-600 hover:text-yellow-900" 
+                    : "text-green-600 hover:text-green-900"
+                  } disabled:opacity-70 disabled:cursor-not-allowed`}
+                >
+                  {comment?.check ? "Unapprove" : "Approve"}
+                </button>
+                <button 
+                  onClick={() => {
+                      deleteDataHandler({slug: comment?._id, token: userState.userInfo.token})
+                  }}
+                  disabled={isLoadingDeleteData}
+                  type='button' 
+                  className='text-red-600 hover:text-red-900 disabled:opacity-70 disabled:cursor-not-allowed'
+                >
+                  Delete
+                </button>
             </td>
             
               </tr>
