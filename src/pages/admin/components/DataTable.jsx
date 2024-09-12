@@ -48,13 +48,17 @@ const DataTable = ({
                     <div className="inline-block min-w-full overflow-hidden rounded-lg shadow">
                         <table className="min-w-full leading-normal">
                             <thead>
-                                {tableHandlerTitleList.map((title) =>(
-                                    <tr>
-                                        <th scope="col" className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200">
-                                            {title}
-                                        </th>
-                                    </tr>
-                                ))}
+                                <tr>
+                                    {tableHandlerTitleList.map((title, index) => (
+                                    <th
+                                        key={index}
+                                        scope="col"
+                                        className="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                                    >
+                                        {title}
+                                    </th>
+                                    ))}
+                                </tr>
                             </thead>
                             <tbody>
                               {isLoading || isFetching ? (
