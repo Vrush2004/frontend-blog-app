@@ -7,7 +7,30 @@ import { useDataTable } from '../../../../hooks/useDataTable'
 import DataTable from '../../components/DataTable'
 
 const ManagePost = () => {
-  
+  const {
+    userState,
+    currentPage,
+    searchKeyword,
+    data: postsData,
+    isLoading,
+    isFetching,
+    isLoadingDeleteData,
+    queryClient,
+    searchKeywordHandler,
+    submitSearchKeywordHandler,
+    deleteDataHandler,
+    setCurrentPage,
+} = useDataTable({
+  dataQueryFn: () => getAllPosts(searchKeyword, currentPage),
+  dataQueryKey: "posts",
+  deleteDataMessage: "Post is deleted",
+  mutateDeleteFn: ({slug,token}) =>{
+    return deletePost({
+      slug,
+      token,
+    })
+  }
+})
   return (
     <DataTable 
       pageTitle="Manage Posts" 
