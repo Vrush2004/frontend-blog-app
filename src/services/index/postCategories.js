@@ -29,3 +29,21 @@ export const deleteCategory = async({slug, token}) => {
         throw new Error(error.message);
     }
 }
+
+export const createCategory = async({ token, title}) => {
+    try{
+        const config = {
+            headers: {
+                Authorization:`Bearer ${token}`,
+            },
+        };
+
+        const {data} = await axios.post(`/api/post-categories/`, {title}, config);
+        return data;
+    }catch(error){
+        console.error("Error updating post:", error.response ? error.response.data : error.message);
+        if(error.response && error.response.data.message)
+            throw new Error(error.response.data.message);
+        throw new Error(error.message);
+    }
+}
