@@ -13,7 +13,7 @@ const { mutate:mutateCreateCategory, isLoading: isLoadingCreateCategory } = useM
     mutationFn: ({token, title }) => {
       return createCategory({
         token,
-        categoryTitle
+        title
       });
     },
     onSuccess: (data) => {
