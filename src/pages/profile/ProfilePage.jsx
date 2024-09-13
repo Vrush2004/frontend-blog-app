@@ -26,6 +26,7 @@ const {mutate, isLoading: updateProfileIsLoading} = useMutation({
         return updateProfile({
             token: userState.userInfo.token,
             userData: {name, email, password},
+            userId: userState.userInfo._id,
         });
     },
     onSuccess:(data) => {
