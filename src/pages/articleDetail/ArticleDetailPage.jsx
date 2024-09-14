@@ -38,6 +38,7 @@ const {data:postsData} = useQuery({
     queryFn: () => getAllPosts(),
     queryKey: ["posts"],
 }) 
+
   return (
     <MainLayout>
         {isLoading ? (

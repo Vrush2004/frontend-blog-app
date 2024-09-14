@@ -15,6 +15,7 @@ import EditPost from './pages/admin/screens/posts/EditPost';
 import Categories from './pages/admin/screens/categories/Categories';
 import EditCategories from './pages/admin/screens/categories/EditCategories';
 import Users from './pages/admin/screens/users/Users';
+import BlogPage from './pages/blog/BlogPage';
 
 function App() {
   return (
