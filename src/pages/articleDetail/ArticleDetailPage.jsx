@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import MainLayout from '../../components/MainLayout'
 import BreadCrumbs from '../../components/BreadCrumbs';
@@ -38,6 +38,10 @@ const {data:postsData} = useQuery({
     queryFn: () => getAllPosts(),
     queryKey: ["posts"],
 }) 
+
+useEffect(() => {
+    window.scrollTo(0, 0)
+})
 
   return (
     <MainLayout>

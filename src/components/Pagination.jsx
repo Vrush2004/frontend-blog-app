@@ -42,6 +42,7 @@ let lastPage = paginationRange[paginationRange.length - 1]
             }
             return (
                 <button 
+                    key={pageNumber}
                     type="button" 
                     className={`w-full px-4 py-2 text-base border ${pageNumber === currentPage ? "text-white bg-green-600" : "text-gray-600 bg-white hover:bg-gray-100"}`}
                     onClick={() => onPageChange(pageNumber)}
